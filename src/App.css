@@ -1,26 +1,38 @@
-/* App.css */
+/* src/App.css */
 .app-container {
   display: flex;
   height: 100vh;
+  /* 기본은 가로 레이아웃 */
+  flex-direction: row;
 }
 
+/* JS에서 감지한 device 클래스 */
 .app-container.mobile {
   flex-direction: column;
 }
-
 .app-container.tablet,
 .app-container.desktop {
   flex-direction: row;
 }
 
+/* 미디어 쿼리로도 보완 */
+@media (max-width: 600px) {
+  .app-container {
+    flex-direction: column;
+  }
+}
+
+/* 좌측 패널: 필터 + 지도 */
 .left-panel {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
+/* 필터바 스타일 */
 .filter-bar {
-  padding: 10px;
+  padding: 8px 10px;
+  background: #f5f5f5;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -28,43 +40,43 @@
   overflow-x: auto;
 }
 
+/* 지도 컨테이너 */
 .map-container {
   flex: 1;
   width: 100%;
 }
 
+/* 우측 대시보드 */
 .dashboard-panel {
   width: 300px;
-  padding: 10px;
-  border-left: 1px solid #ccc;
+  border-left: 1px solid #ddd;
+  padding: 12px;
   background: #fafafa;
   overflow-y: auto;
 }
 
-.major-btn,
-.sub-btn,
-.action-btn,
-.filter-bar select,
-.filter-bar input {
-  min-height: 36px;
-  min-width: 48px;
-  padding: 6px 8px;
-  font-size: 0.9rem;
+/* 모바일에서 대시보드를 하단으로 내리고 전체 너비 사용 */
+@media (max-width: 600px) {
+  .dashboard-panel {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid #ddd;
+  }
 }
 
-.sub-btn.selected {
-  background-color: #007bff;
-  color: #fff;
+/* 토글 컨트롤 여백 */
+.dashboard-controls {
+  margin-bottom: 12px;
 }
 
-.major-btn.expanded {
-  background-color: #f0f0f0;
+/* 범례 여백 */
+.legend {
+  margin-top: 12px;
 }
 
-.search-label {
-  margin-left: 16px;
-}
-
-.filter-bar input[type="date"] {
-  padding: 4px 6px;
-}
+/* (기존에 사용하던 버튼/입력 스타일이 필요하면 여기 그대로 유지) */
+/* .major-btn, .sub-btn, .action-btn, .filter-bar select, .filter-bar input { ... } */
+/* .sub-btn.selected { ... } */
+/* .major-btn.expanded { ... } */
+/* .search-label { ... } */
+/* .filter-bar input[type="date"] { ... } */
