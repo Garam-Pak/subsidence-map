@@ -64,8 +64,8 @@ export default function App() {
     return Object.entries(iconUrls).reduce((acc, [name, url]) => {
       acc[name] = new L.Icon({
         iconUrl: url,
-        iconSize: device === 'mobile' ? [24, 36] : [12, 20],
-        iconAnchor: device === 'mobile' ? [12, 36] : [5, 20],
+        iconSize: device === 'mobile' ? [16, 24] : [12, 20],
+        iconAnchor: device === 'mobile' ? [8, 24] : [5, 20],
         popupAnchor: [1, -20],
       });
       return acc;
@@ -96,7 +96,7 @@ export default function App() {
       .then(topo => setMuniGeo(feature(topo, topo.objects.skorea_municipalities_2018_geo)));
   }, []);
 
-  const muniStyle = () => ({ color: "#0077ff", weight: 2, fillOpacity: 0 });
+  const muniStyle = () => ({ color: "#0077ff", weight: 1, fillOpacity: 0 });
 
   const withRegions = allData.map(d => {
     const parts = d.address.split(" ");
