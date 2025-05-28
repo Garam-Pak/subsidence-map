@@ -16,13 +16,27 @@ import './App.css';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 const { BaseLayer, Overlay } = LayersControl;
+const agingColorScale = [
+  { label: "95% 이상", color: "#67000d" },        //노후화율에 따른 색상 범례
+  { label: "90–94%", color: "#800026" },
+  { label: "80–89%", color: "#BD0026" },
+  { label: "70–79%", color: "#E31A1C" },
+  { label: "60–69%", color: "#FC4E2A" },
+  { label: "40–59%", color: "#FD8D3C" },
+  { label: "20–39%", color: "#FEB24C" },
+  { label: "10–19%", color: "#FED976" },
+  { label: "10% 미만", color: "#FFEDA0" }
+];
 
 const getColorFromRate = rate => {
-  if (rate >= 80) return "#800026";
-  if (rate >= 60) return "#BD0026";
-  if (rate >= 40) return "#E31A1C";
-  if (rate >= 20) return "#FC4E2A";
-  if (rate >= 10) return "#FD8D3C";
+  if (rate >= 95) return "#67000d";
+  if (rate >= 90) return "#800026";
+  if (rate >= 80) return "#BD0026";
+  if (rate >= 70) return "#E31A1C";
+  if (rate >= 60) return "#FC4E2A";
+  if (rate >= 40) return "#FD8D3C";
+  if (rate >= 20) return "#FEB24C";
+  if (rate >= 10) return "#FED976";
   return "#FFEDA0";
 };
 
@@ -133,13 +147,13 @@ export default function App() {
   });
 
   const filtered = withRegions
-    .filter(d => !selectedRegion1 || d.region1 === selectedRegion1)
-    .filter(d => !selectedRegion2 || d.region2 === selectedRegion2)
-    .filter(d => !startDate || d.date >= startDate)
-    .filter(d => !endDate || d.date <= endDate)
-    .filter(d => !searchText || searchText.split(',').some(t => d.category.includes(t.trim())))
-    .filter(d => !selectedCategories.length || selectedCategories.includes(d.category))
-    .filter(d => d.latitude && d.longitude);
+    .filter(d => !selectedRegion1 || d.region1 === selectedRegion1) //시,도 필터
+    .filter(d => !selectedRegion2 || d.region2 === selectedRegion2) // 구,군 필터
+    .filter(d => !startDate || d.date >= startDate)                 // 시작일 필터
+    .filter(d => !endDate || d.date <= endDate)                     // 종료일 필터     
+    .filter(d => !searchText || searchText.split(',').some(t => d.category.includes(t.trim())))       // 키워드 필터
+    .filter(d => !selectedCategories.length || selectedCategories.includes(d.category))   //원인(카테고리) 필터
+    .filter(d => d.latitude && d.longitude);                // 위치 값 존재 여부
 
   const chartData = useMemo(() => {
     const cnt = {};
@@ -266,7 +280,12 @@ export default function App() {
                 <GeoJSON
                   data={muniGeo}
                   style={muniStyle}
-                  onEachFeature={(f, l) => l.bindTooltip(f.properties.name, { sticky: true })}
+                  onEachFeature={(f, l) => {
+  const m = agingData.find(r => f.properties.name.includes(r.region2));
+  const rate = m && m[selectedYear] ? `${m[selectedYear]}%` : "데이터 없음";
+  l.bindTooltip(`${f.properties.name} (${rate})`, { sticky: true });
+}}
+
                 />
               )}
             </Overlay>
@@ -330,6 +349,43 @@ export default function App() {
             </div>
           )
         )}
+
+        {showLegend && (
+  <div className="legend">
+    <h4>범례</h4>
+    {showAging ? (
+      agingColorScale.map(({ label, color }) => (
+        <div key={label} style={{ display: 'flex', alignItems: 'center', marginBottom: 4 }}>
+          <span
+            style={{
+              background: color,
+              width: 14,
+              height: 14,
+              display: 'inline-block',
+              marginRight: 6,
+              border: '1px solid #999'
+            }}
+          />
+          {label}
+        </div>
+      ))
+    ) : (
+      Object.entries(majorColorMap).map(([k, v]) => (
+        <div key={k}>
+          <span
+            style={{
+              background: v,
+              width: 10,
+              height: 10,
+              display: 'inline-block',
+              marginRight: 5
+            }}
+          /> {k}
+        </div>
+      ))
+    )}
+  </div>
+)}
 
         {showLegend && (
           <div className="legend">
