@@ -1,0 +1,85 @@
+/* App.css */
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* 모바일(1순위)일 때는 세로 정렬 */
+.app-container.mobile {
+  flex-direction: column;
+}
+
+/* 태블릿일 때 */
+.app-container.tablet {
+  flex-direction: row;
+}
+
+/* 데스크탑일 때 */
+.app-container.desktop {
+  flex-direction: row;
+}
+
+/* 왼쪽(필터 + 지도) */
+.left-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 필터 바 */
+.filter-bar {
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+  overflow-x: auto;     /* 모바일에서 가로 스크롤 허용 */
+}
+
+/* 지도 영역 */
+.map-container {
+  flex: 1;
+  width: 100%;
+}
+
+/* 오른쪽 대시보드 */
+.dashboard-panel {
+  width: 300px;
+  padding: 10px;
+  border-left: 1px solid #ccc;
+  background: #fafafa;
+  overflow-y: auto;
+}
+
+/* 버튼·선택창 등 터치 타깃 확보 */
+.major-btn,
+.sub-btn,
+.action-btn,
+.filter-bar select,
+.filter-bar input {
+  min-height: 36px;
+  min-width: 48px;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+}
+
+/* 선택된 서브 카테고리 버튼 */
+.sub-btn.selected {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* 확장된 메이저 카테고리 버튼 */
+.major-btn.expanded {
+  background-color: #f0f0f0;
+}
+
+/* 검색 입력라벨 */
+.search-label {
+  margin-left: 16px;
+}
+
+/* 날짜 입력 기본 스타일 */
+.filter-bar input[type="date"] {
+  padding: 4px 6px;
+}
