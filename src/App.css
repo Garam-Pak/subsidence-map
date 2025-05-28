@@ -80,3 +80,78 @@
 /* .major-btn.expanded { ... } */
 /* .search-label { ... } */
 /* .filter-bar input[type="date"] { ... } */
+/* 눌린 Major(그룹) 버튼 강조 */
+.major-group > button.expanded {
+  background-color: #007bff; /* 파란 배경 */
+  color: #fff;               /* 흰 글자 */
+  font-weight: bold;         /* 굵은 글씨 */
+}
+
+/* 눌린 Sub(카테고리) 버튼 강조 */
+.major-group > button.selected {
+  background-color: #28a745; /* 초록 배경 */
+  color: #fff;               /* 흰 글자 */
+  font-weight: bold;         /* 굵은 글씨 */
+}
+
+/* App.css 에 아래를 맨 아래에 추가 */
+
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 6px 10px;
+  background: #f0f8ff;
+  border-bottom: 1px solid #ddd;
+}
+
+.selected-tags .tag {
+  display: inline-flex;
+  align-items: center;
+  background: #007bff;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+.selected-tags .tag button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  margin-left: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.selected-tags .clear-all {
+  background: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 2px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-left: auto;
+}
+
+/* 모바일 화면에서 태그가 많을 경우 스크롤 가능하도록 개선 */
+@media (max-width: 600px) {
+  .selected-tags {
+    max-height: 120px;
+    overflow-y: auto;
+    padding-right: 4px; /* 스크롤 바 공간 */
+  }
+
+  .selected-tags .tag {
+    font-size: 0.85rem;
+    padding: 4px 8px;
+  }
+
+  .selected-tags .clear-all {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
+

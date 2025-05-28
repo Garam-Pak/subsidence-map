@@ -162,6 +162,21 @@ export default function App() {
   return (
     <div className={`app-container ${device}`}>
       <div className="left-panel">
+        {/* 선택된 카테고리 태그 */}
+        {selectedCategories.length > 0 && (
+          <div className="selected-tags">
+            {selectedCategories.map(cat => (
+              <span key={cat} className="tag">
+                {cat}
+                <button onClick={() => setSelectedCategories(prev => prev.filter(x => x !== cat))}>
+                  &times;
+                </button>
+              </span>
+            ))}
+            <button className="clear-all" onClick={() => setSelectedCategories([])}>전체 해제</button>
+          </div>
+        )}
+
         <div className="filter-bar">
           <button onClick={resetFilters}>초기화</button>
           <label>시/도:
@@ -180,6 +195,7 @@ export default function App() {
           )}
           <label>시작일:<input type="date" value={startDate} onChange={e=>setStartDate(e.target.value)}/></label>
           <label>종료일:<input type="date" value={endDate} onChange={e=>setEndDate(e.target.value)}/></label>
+          <label>검색:<input value={searchText} onChange={e=>setSearchText(e.target.value)} placeholder="하수,연약"/></label>
           {[...majorCats,'기타'].map(m => (
             <div key={m} className="major-group">
               <button
@@ -195,8 +211,8 @@ export default function App() {
               ))}
             </div>
           ))}
-          <label>검색:<input value={searchText} onChange={e=>setSearchText(e.target.value)} placeholder="하수,연약"/></label>
-          <button onClick={()=>{
+
+          <button onClick={() => {
             const ws = XLSX.utils.json_to_sheet(filtered);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, 'Data');
